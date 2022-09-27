@@ -1,9 +1,20 @@
 <h2>My Heroes</h2>
 <ul class="heroes">
   <li *ngFor="let hero of heroes">
-    <button type="button" (click)="onSelect(hero)">
+    <!--Class-Binding to add or remove a class based on the condition: [class.some-css-class]="some-condition"-->
+    <button type="button" (click)="onSelect(hero)" [class.selected]="hero === selectedHero">
       <span class="badge">{{hero.id}}</span>
       <span class="name">{{hero.name}}</span>
     </button>
   </li>
 </ul>
+
+<!--Section if a hero is selected-->
+<div *ngIf="selectedHero">
+  <h2>{{selectedHero.name | uppercase}} Details</h2><!--Pipe to format the string-->
+  <div>id: {{selectedHero.id}}</div>
+  <div>
+    <label for="hero-name">Hero name: </label>
+    <input id="hero-name" [(ngModel)]="selectedHero.name" placeholder="name">
+  </div>
+</div>
