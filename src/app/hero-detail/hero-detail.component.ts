@@ -7,6 +7,7 @@ import { Hero } from '../hero';
   styleUrls: ['./hero-detail.component.css'],
 })
 export class HeroDetailComponent implements OnInit {
+  //Value will be passed on component include
   @Input() selectedHero?: Hero;
 
   constructor() {}
