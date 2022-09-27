@@ -1,7 +1,9 @@
-<h2>{{ hero.name | uppercase }}</h2>
-<!--Pipe to format the string to uppercase-->
-<div>
-  <label for="name">Hero name: </label>
-  <!--ngModel is the two-way data binding syntax of angular-->
-  <input id="name" [(ngModel)]="hero.name" placeholder="name" />
-</div>
+<h2>My Heroes</h2>
+<ul class="heroes">
+  <li *ngFor="let hero of heroes">
+    <button type="button">
+      <span class="badge">{{hero.id}}</span>
+      <span class="name">{{hero.name}}</span>
+    </button>
+  </li>
+</ul>
