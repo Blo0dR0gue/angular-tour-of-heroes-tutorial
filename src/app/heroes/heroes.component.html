@@ -1,11 +1,9 @@
 <h2>My Heroes</h2>
 <ul class="heroes">
   <li *ngFor="let hero of heroes">
-    <!--Class-Binding to add or remove a class based on the condition: [class.some-css-class]="some-condition"-->
-    <button type="button" (click)="onSelect(hero)" [class.selected]="hero === selectedHero">
-      <span class="badge">{{hero.id}}</span>
-      <span class="name">{{hero.name}}</span>
-    </button>
+    <a routerLink="/detail/{{ hero.id }}">
+      <span class="badge">{{ hero.id }}</span> {{ hero.name }}
+    </a>
   </li>
 </ul>
 <!--Include display component and pass selected hero (one-way data binding)-->
