@@ -7,5 +7,7 @@
     <label for="hero-name">Hero name: </label>
     <input id="hero-name" [(ngModel)]="selectedHero.name" placeholder="name" />
   </div>
+  <button type="button" (click)="save()">save</button>
+  <button type="button" (click)="deleteHero()">delete</button>
 </div>
 <button type="button" (click)="goBack()">go back</button>
