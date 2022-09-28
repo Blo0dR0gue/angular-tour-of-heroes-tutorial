@@ -3,13 +3,12 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Hero } from './hero';
 import { MessageService } from './message.service';
-import { HEROES } from './mock-heroes';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HeroService {
-  private heroesUrl = 'http://localhost:8080/api/heroes';
+  private heroesUrl = 'http://localhost:8080/api/v1/hero';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
@@ -41,7 +40,7 @@ export class HeroService {
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+      this.log(`${operation} failed: ${error.error.apierrorresponse.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);
