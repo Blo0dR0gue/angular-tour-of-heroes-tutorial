@@ -2,6 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3. <br>
 It is based on the [tour of heroes tutorial](https://angular.io/tutorial). <br>
+Not much emphasis was placed on how the application looks in the end. The goal was to develop an Angular app that uses Spring Boot as the backend. <br>
 The backend was developed using Spring Boot in [this](https://github.com/Blo0dR0gue/tour-of-heroes-backend) repository.
 
 ## Development server
