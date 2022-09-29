@@ -40,7 +40,7 @@ export class HeroService {
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.error?.apierrorresponse ? error.error.apierrorresponse.message : error.message}`);
+      this.log(`${operation} failed: ${error.error ? (error.error.apierrorresponse ? error.error.apierrorresponse.message : error.error.message) : error.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

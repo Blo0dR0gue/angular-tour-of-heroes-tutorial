@@ -1,3 +1,4 @@
+<div class="alert alert-warning" *ngIf="isLoginFailed">{{errorMessage}}</div>
 <form role="form" (submit)="login()">
   <div class="form-group">
     <label for="username">Username:</label>

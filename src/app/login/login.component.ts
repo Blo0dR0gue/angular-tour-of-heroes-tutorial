@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -10,13 +10,16 @@ import { TokenStorageService } from '../services/token-storage.service';
 export class LoginComponent implements OnInit {
 
   credentials = {username: '', password: ''};
-  isLoggedIn = false;
   isLoginFailed = false;
+  errorMessage = "Invalid credentials"
   roles: string[] = [];
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    if(this.authService.isUserLoggedIn()){
+      this.router.navigate(["login"]);
+    }
   }
 
     login() {
@@ -24,15 +27,9 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(username, password).subscribe({
         next: data => {
-          this.tokenStorage.saveToken(data.token);
-          this.tokenStorage.saveUser(data);
-  
-          this.isLoginFailed = false;
-          this.isLoggedIn = true;
-          this.roles = this.tokenStorage.getUser().roles;
+          this.router.navigate(["dashboard"])
         },
         error: data => {
-          console.log(data);
           this.isLoginFailed = true;
         }
       });

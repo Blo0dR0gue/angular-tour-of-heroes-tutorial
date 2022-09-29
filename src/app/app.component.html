@@ -1,11 +1,19 @@
 <h1>{{ title }}</h1>
 <!--Navigation-->
-<nav>
-  <a routerLink="/dashboard">Dashboard</a>
-  
-  <a routerLink="/heroes">Heroes</a>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <div *ngIf="isUserLoggedIn()">
+    <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+    <a routerLink="/heroes" class="nav-link">Heroes</a>
+  </div>
 
-  <a routerLink="/login">Login</a>
+  <div class="navbar-nav navbar-collapse justify-content-end">
+    <div *ngIf="!isUserLoggedIn()">
+      <a routerLink="/login" class="nav-link">Login</a>
+    </div>
+    <div *ngIf="isUserLoggedIn()">
+      <a routerLink="/logout" class="nav-link">Logout</a>
+    </div>
+  </div>
 </nav>
 <!--Adds the router-location-->
 <router-outlet></router-outlet>
