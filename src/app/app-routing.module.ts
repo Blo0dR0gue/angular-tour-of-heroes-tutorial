@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [RouteGuard] },
   { path: 'detail/:id', component: HeroDetailComponent, canActivate: [RouteGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'logout', component: LogoutComponent },
+  { path: 'logout', component: LogoutComponent, canActivate: [RouteGuard] },
   { path: 'register', component: RegisterComponent },
 ];
 
