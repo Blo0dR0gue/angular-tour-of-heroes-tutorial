@@ -9,6 +9,7 @@
   <div class="navbar-nav navbar-collapse justify-content-end">
     <div *ngIf="!isUserLoggedIn()">
       <a routerLink="/login" class="nav-link">Login</a>
+      <a routerLink="/register" class="nav-link">Register</a>
     </div>
     <div *ngIf="isUserLoggedIn()">
       <a routerLink="/logout" class="nav-link">Logout</a>
