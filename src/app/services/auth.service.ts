@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { Buffer } from 'buffer';
+import { delay, map, Observable, of, Subscription } from 'rxjs';
 import { JwtResponse } from '../models/jwtResponse';
 import { TokenStorageService } from './token-storage.service';
 
@@ -15,6 +16,8 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
+  private tokenSubscription = new Subscription();
+
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorageService,
@@ -35,9 +38,26 @@ export class AuthService {
         map((data) => {
           this.tokenStorage.saveToken(data.token);
           this.tokenStorage.saveUser(data);
+          this.handleAutoLogoutOnExpire(data.token);
           return data;
         })
       );
+  }
+
+  private handleAutoLogoutOnExpire(token: string) {
+    const jwtToken = JSON.parse(
+      Buffer.from(token.split('.')[1], 'base64').toString("ascii")
+    );
+    const expires = new Date(jwtToken.exp * 1000);
+    const timeout = expires.getTime() - Date.now();
+    this.tokenSubscription.unsubscribe();
+    this.tokenSubscription = of(null)
+      .pipe(delay(timeout))
+      .subscribe((_) => {
+        console.log('EXPIRED!');
+        this.tokenStorage.signOut();
+        this.router.navigate(['login']);
+      });
   }
 
   public getUser() {
@@ -66,6 +86,6 @@ export class AuthService {
 
   public logout() {
     this.tokenStorage.signOut();
-    this.router.navigate(["login"]);
+    this.router.navigate(['login']);
   }
 }
