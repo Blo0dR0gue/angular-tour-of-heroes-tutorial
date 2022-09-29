@@ -1,6 +1,8 @@
 # AngularTourOfHeroes
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3. <br>
+It is based on the [tour of heroes tutorial](https://angular.io/tutorial). <br>
+The backend was developed using Spring Boot in [this](https://github.com/Blo0dR0gue/tour-of-heroes-backend) repository.
 
 ## Development server
 
