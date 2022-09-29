@@ -38,13 +38,15 @@ export class AuthService {
         map((data) => {
           this.tokenStorage.saveToken(data.token);
           this.tokenStorage.saveUser(data);
-          this.handleAutoLogoutOnExpire(data.token);
+          this.handleAutoLogoutOnExpire();
           return data;
         })
       );
   }
 
-  private handleAutoLogoutOnExpire(token: string) {
+  public handleAutoLogoutOnExpire() {
+    const token = this.tokenStorage.getToken();
+    if(token == null) return;
     const jwtToken = JSON.parse(
       Buffer.from(token.split('.')[1], 'base64').toString("ascii")
     );
@@ -55,8 +57,7 @@ export class AuthService {
       .pipe(delay(timeout))
       .subscribe((_) => {
         console.log('EXPIRED!');
-        this.tokenStorage.signOut();
-        this.router.navigate(['login']);
+        this.logout();
       });
   }
 

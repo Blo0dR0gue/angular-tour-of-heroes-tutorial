@@ -11,6 +11,11 @@ export class AppComponent {
 
   constructor(private authService: AuthService){}
 
+    //Lifecycle hook - Called after creating the component
+    ngOnInit(): void {
+      //Init auto logout handler, if page got reloaded.
+      this.authService.handleAutoLogoutOnExpire();
+    }
 
   isUserLoggedIn(): boolean {
     return this.authService.isUserLoggedIn();
