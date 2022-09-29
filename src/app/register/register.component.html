@@ -2,13 +2,16 @@
 
 <div class="container">
   <div class="alert alert-warning" *ngIf="registrationForm.dirty && registrationForm.invalid">
-    Please, correct form data.
+    Please correct your input.
   </div>
   <div class="alert alert-warning" *ngIf="password.dirty && password.invalid">
-    Please, correct password.
+    Please correct your email.
+  </div>
+  <div class="alert alert-warning" *ngIf="password.dirty && password.invalid">
+    Please correct the password.
   </div>
   <div class="alert alert-warning" *ngIf="username.dirty && username.invalid">
-    Please, correct username.
+    Please correct the username.
   </div>
 
   <form (ngSubmit)="registrationForm.valid && onSubmit()" #registrationForm="ngForm">
@@ -19,7 +22,7 @@
         <input type="text"
                [(ngModel)]="form.username"
                class="form-control"
-               name="description"
+               name="username"
                minlength="3"
                #username="ngModel"
                required
