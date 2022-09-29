@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { JwtResponse } from '../models/jwtResponse';
 import { TokenStorageService } from './token-storage.service';
@@ -14,27 +15,31 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private tokenStorage: TokenStorageService) {}
-  
+  constructor(
+    private http: HttpClient,
+    private tokenStorage: TokenStorageService,
+    private router: Router
+  ) {}
 
   public login(username: string, password: string): Observable<JwtResponse> {
-    return this.http.post<JwtResponse>(
-      AUTH_API + 'login',
-      {
-        username,
-        password,
-      },
-      httpOptions
-    ).pipe(
-      map(data => {
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data);
-        return data;
-      })
-    );
+    return this.http
+      .post<JwtResponse>(
+        AUTH_API + 'login',
+        {
+          username,
+          password,
+        },
+        httpOptions
+      )
+      .pipe(
+        map((data) => {
+          this.tokenStorage.saveToken(data.token);
+          this.tokenStorage.saveUser(data);
+          return data;
+        })
+      );
   }
 
-  
   public getUser() {
     return this.tokenStorage.getUser();
   }
@@ -43,7 +48,11 @@ export class AuthService {
     return this.getUser() != undefined;
   }
 
-  public register(username: string, email: string, password: string): Observable<any> {
+  public register(
+    username: string,
+    email: string,
+    password: string
+  ): Observable<any> {
     return this.http.post(
       REGISTER_API,
       {
@@ -53,5 +62,10 @@ export class AuthService {
       },
       httpOptions
     );
+  }
+
+  public logout() {
+    this.tokenStorage.signOut();
+    this.router.navigate(["login"]);
   }
 }

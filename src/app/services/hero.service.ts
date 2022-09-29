@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Hero } from '../models/hero';
+import { AuthService } from './auth.service';
 import { MessageService } from './message.service';
 
 @Injectable({
@@ -15,7 +16,8 @@ export class HeroService {
 
   constructor(
     private messageService: MessageService,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {}
 
   /**
@@ -41,6 +43,9 @@ export class HeroService {
 
       // TODO: better job of transforming error for user consumption
       this.log(`${operation} failed: ${error.error ? (error.error.apierrorresponse ? error.error.apierrorresponse.message : (error.error.message ? error.error.message : error.message)) : error.message}`);
+  
+      if(error.status === 401)
+        this.authService.logout();
 
       // Let the app keep running by returning an empty result.
       return of(result as T);
