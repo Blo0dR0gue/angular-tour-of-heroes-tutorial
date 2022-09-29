@@ -1,5 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -8,22 +9,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  private url = 'http://localhost:8080/api/v1/auth';
-
   credentials = {username: '', password: ''};
+  isLoggedIn = false;
+  isLoginFailed = false;
+  roles: string[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
   }
 
     login() {
-      const headers = new HttpHeaders(this.credentials ? {
-        authorization : 'Basic ' + btoa(this.credentials.username + ':' + this.credentials.password)
-    } : {});
-    this.http.get(this.url, {headers: headers}).subscribe(response => {
-      console.log(response);
-    })
+      const { username, password } = this.credentials;
+
+      this.authService.login(username, password).subscribe({
+        next: data => {
+          this.tokenStorage.saveToken(data.token);
+          this.tokenStorage.saveUser(data);
+  
+          this.isLoginFailed = false;
+          this.isLoggedIn = true;
+          this.roles = this.tokenStorage.getUser().roles;
+        },
+        error: data => {
+          console.log(data);
+          this.isLoginFailed = true;
+        }
+      });
   }
 
 }

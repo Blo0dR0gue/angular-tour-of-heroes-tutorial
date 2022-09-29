@@ -1,0 +1,61 @@
+<h1>Registration form</h1>
+
+<div class="container">
+  <div class="alert alert-warning" *ngIf="registrationForm.dirty && registrationForm.invalid">
+    Please, correct form data.
+  </div>
+  <div class="alert alert-warning" *ngIf="password.dirty && password.invalid">
+    Please, correct password.
+  </div>
+  <div class="alert alert-warning" *ngIf="username.dirty && username.invalid">
+    Please, correct username.
+  </div>
+
+  <form (ngSubmit)="registrationForm.valid && onSubmit()" #registrationForm="ngForm">
+
+    <fieldset class="form-group">
+      <label>
+        User Name:
+        <input type="text"
+               [(ngModel)]="form.username"
+               class="form-control"
+               name="description"
+               minlength="3"
+               #username="ngModel"
+               required
+        />
+      </label>
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label>
+        Password:
+        <input type="email"
+               [(ngModel)]="form.email"
+               class="form-control"
+               name="email"
+               minlength="6"
+               #email="ngModel"
+               required
+        />
+      </label>
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label>
+        Password:
+        <input type="password"
+               [(ngModel)]="form.password"
+               class="form-control"
+               name="password"
+               minlength="6"
+               #password="ngModel"
+               required
+        />
+      </label>
+    </fieldset>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+
+  </form>
+</div>
