@@ -7,6 +7,7 @@ import { HeroesComponent } from './heroes/heroes.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
+import { TotpComponent } from './totp/totp.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent, canActivate: [RouteGuard] },
   { path: 'register', component: RegisterComponent },
+  { path: 'totp', component: TotpComponent }
 ];
 
 @NgModule({
