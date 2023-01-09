@@ -46,9 +46,9 @@ export class AuthService {
 
   public handleAutoLogoutOnExpire() {
     const token = this.tokenStorage.getToken();
-    if(token == null) return;
+    if (token == null) return;
     const jwtToken = JSON.parse(
-      Buffer.from(token.split('.')[1], 'base64').toString("ascii")
+      Buffer.from(token.split('.')[1], 'base64').toString('ascii')
     );
     const expires = new Date(jwtToken.exp * 1000);
     const timeout = expires.getTime() - Date.now();
@@ -88,5 +88,20 @@ export class AuthService {
   public logout() {
     this.tokenStorage.signOut();
     this.router.navigate(['login']);
+  }
+
+  public verify(credentials: any): Observable<JwtResponse> {
+    return this.http
+      .post<JwtResponse>(AUTH_API + 'verify', credentials.code, {
+        headers: new HttpHeaders({ 'Content-Type': 'text/plain' }),
+      })
+      .pipe(
+        map((data) => {
+          this.tokenStorage.saveToken(data.token);
+          this.tokenStorage.saveUser(data);
+          this.handleAutoLogoutOnExpire();
+          return data;
+        })
+      );
   }
 }

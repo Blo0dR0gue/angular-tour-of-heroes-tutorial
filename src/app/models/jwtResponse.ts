@@ -3,5 +3,6 @@ export interface JwtResponse {
     id: number,
     username: string,
     email: string,
-    roles: Set<string>
+    roles: Set<string>,
+    authenticated: boolean
 }
