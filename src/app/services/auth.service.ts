@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Buffer } from 'buffer';
 import { delay, map, Observable, of, Subscription } from 'rxjs';
 import { JwtResponse } from '../models/jwtResponse';
+import { SignUpResponse } from '../models/SignUpResponse';
 import { TokenStorageService } from './token-storage.service';
 
 const AUTH_API = 'http://localhost:8080/api/v1/auth/';
@@ -39,6 +40,11 @@ export class AuthService {
           this.tokenStorage.saveToken(data.token);
           this.tokenStorage.saveUser(data);
           this.handleAutoLogoutOnExpire();
+          if (data.authenticated) {
+            this.router.navigate(['dashboard']);
+          } else {
+            this.router.navigate(['totp']);
+          }
           return data;
         })
       );
@@ -66,23 +72,32 @@ export class AuthService {
   }
 
   public isUserLoggedIn(): boolean {
-    return this.getUser() != undefined;
+    return this.getUser() != undefined && this.getUser().authenticated;
   }
 
   public register(
     username: string,
     email: string,
-    password: string
-  ): Observable<any> {
-    return this.http.post(
-      REGISTER_API,
-      {
-        username,
-        email,
-        password,
-      },
-      httpOptions
-    );
+    password: string,
+    using2FA: boolean
+  ): Observable<SignUpResponse> {
+    return this.http
+      .post<SignUpResponse>(
+        REGISTER_API,
+        {
+          username,
+          email,
+          password,
+          using2FA,
+        },
+        httpOptions
+      )
+      .pipe(
+        map((data) => {
+          //TODO ?
+          return data;
+        })
+      );
   }
 
   public logout() {
@@ -100,6 +115,7 @@ export class AuthService {
           this.tokenStorage.saveToken(data.token);
           this.tokenStorage.saveUser(data);
           this.handleAutoLogoutOnExpire();
+          this.router.navigate(['dashboard']);
           return data;
         })
       );

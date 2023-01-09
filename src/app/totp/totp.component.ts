@@ -9,6 +9,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class TotpComponent implements OnInit {
 
+  //TODO: verify scanned qr code
+
   form: any = {};
   isLoggedIn = false;
   isLoginFailed = false;
@@ -18,7 +20,7 @@ export class TotpComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    if (this.authService.isUserLoggedIn()) {
+    if (this.authService.getUser().authenticated) {
       this.isLoggedIn = true;
       this.currentUser = this.authService.getUser();
     }

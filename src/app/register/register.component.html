@@ -1,7 +1,10 @@
 <h1>Registration form</h1>
 
-<div class="container">
-  <div class="alert alert-warning" *ngIf="registrationForm.dirty && registrationForm.invalid">
+<div class="container" *ngIf="!isSignUpSuccessful">
+  <div
+    class="alert alert-warning"
+    *ngIf="registrationForm.dirty && registrationForm.invalid"
+  >
     Please correct your input.
   </div>
   <div class="alert alert-warning" *ngIf="password.dirty && password.invalid">
@@ -14,18 +17,21 @@
     Please correct the username.
   </div>
 
-  <form (ngSubmit)="registrationForm.valid && onSubmit()" #registrationForm="ngForm">
-
+  <form
+    (ngSubmit)="registrationForm.valid && onSubmit()"
+    #registrationForm="ngForm"
+  >
     <fieldset class="form-group">
       <label>
         User Name:
-        <input type="text"
-               [(ngModel)]="form.username"
-               class="form-control"
-               name="username"
-               minlength="3"
-               #username="ngModel"
-               required
+        <input
+          type="text"
+          [(ngModel)]="form.username"
+          class="form-control"
+          name="username"
+          minlength="3"
+          #username="ngModel"
+          required
         />
       </label>
     </fieldset>
@@ -33,13 +39,14 @@
     <fieldset class="form-group">
       <label>
         E-Mail:
-        <input type="email"
-               [(ngModel)]="form.email"
-               class="form-control"
-               name="email"
-               minlength="6"
-               #email="ngModel"
-               required
+        <input
+          type="email"
+          [(ngModel)]="form.email"
+          class="form-control"
+          name="email"
+          minlength="6"
+          #email="ngModel"
+          required
         />
       </label>
     </fieldset>
@@ -47,18 +54,40 @@
     <fieldset class="form-group">
       <label>
         Password:
-        <input type="password"
-               [(ngModel)]="form.password"
-               class="form-control"
-               name="password"
-               minlength="6"
-               #password="ngModel"
-               required
+        <input
+          type="password"
+          [(ngModel)]="form.password"
+          class="form-control"
+          name="password"
+          minlength="6"
+          #password="ngModel"
+          required
+        />
+      </label>
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label>
+        Use wo Step Verification:
+        <input
+          type="checkbox"
+          [(ngModel)]="form.using2FA"
+          class="form-control"
+          name="using2FA"
+          #using2FA="ngModel"
+          required
         />
       </label>
     </fieldset>
 
     <button type="submit" class="btn btn-success">Submit</button>
-
   </form>
+</div>
+
+<div class="" *ngIf="isSignUpSuccessful">
+  Your registration is successful!
+  <div *ngIf="isUsing2FA">
+      <p>Scan this QR code using Google Authenticator app on your phone to use it later to login</p>
+      <img src="{{qrCodeImg}}" class="img-fluid" />
+  </div>
 </div>
