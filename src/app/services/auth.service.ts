@@ -7,8 +7,7 @@ import { JwtResponse } from '../models/jwtResponse';
 import { SignUpResponse } from '../models/SignUpResponse';
 import { TokenStorageService } from './token-storage.service';
 
-const AUTH_API = 'http://localhost:8080/api/v1/auth/';
-const REGISTER_API = 'http://localhost:8080/api/v1/register';
+const AUTH_API = 'http://localhost:8080/api/v1/auth';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
@@ -28,7 +27,7 @@ export class AuthService {
   public login(username: string, password: string): Observable<JwtResponse> {
     return this.http
       .post<JwtResponse>(
-        AUTH_API + 'login',
+        AUTH_API + '/login',
         {
           username,
           password,
@@ -83,7 +82,7 @@ export class AuthService {
   ): Observable<SignUpResponse> {
     return this.http
       .post<SignUpResponse>(
-        REGISTER_API,
+        AUTH_API + "/register",
         {
           username,
           email,
@@ -107,7 +106,7 @@ export class AuthService {
 
   public verify(credentials: any): Observable<JwtResponse> {
     return this.http
-      .post<JwtResponse>(AUTH_API + 'verify', credentials.code, {
+      .post<JwtResponse>(AUTH_API + '/verify', credentials.code, {
         headers: new HttpHeaders({ 'Content-Type': 'text/plain' }),
       })
       .pipe(
