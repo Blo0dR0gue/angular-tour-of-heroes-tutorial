@@ -1,6 +1,6 @@
 <h1>Registration form</h1>
 
-<div class="container" *ngIf="!isSignUpSuccessful">
+<div class="container" *ngIf="!isSignUpSuccessful && !use2FASignUp">
   <div
     class="alert alert-warning"
     *ngIf="registrationForm.dirty && registrationForm.invalid"
@@ -75,7 +75,6 @@
           class="form-control"
           name="using2FA"
           #using2FA="ngModel"
-          required
         />
       </label>
     </fieldset>
@@ -84,10 +83,33 @@
   </form>
 </div>
 
+<div class="" *ngIf="isUsing2FA && !isSignUpSuccessful">
+  <form (ngSubmit)="form2FA.valid && onSubmit2FA()" #form2FA="ngForm">
+    <p>
+      Scan this QR code using Google Authenticator app on your phone and enter
+      the code.
+    </p>
+    <img src="{{ qrCodeImg }}" class="img-fluid" />
+
+    <fieldset class="form-group">
+      <label>
+        Password:
+        <input
+          type="text"
+          [(ngModel)]="form.code"
+          class="form-control"
+          name="password"
+          minlength="6"
+          maxlength="6"
+          #password="ngModel"
+          required
+        />
+      </label>
+    </fieldset>
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>
+
 <div class="" *ngIf="isSignUpSuccessful">
-  Your registration is successful!
-  <div *ngIf="isUsing2FA">
-      <p>Scan this QR code using Google Authenticator app on your phone to use it later to login</p>
-      <img src="{{qrCodeImg}}" class="img-fluid" />
-  </div>
+  registration completed successfully
 </div>

@@ -78,7 +78,9 @@ export class AuthService {
     username: string,
     email: string,
     password: string,
-    using2FA: boolean
+    using2FA: boolean,
+    code: string|null = null,
+    secret: string|null = null
   ): Observable<SignUpResponse> {
     return this.http
       .post<SignUpResponse>(
@@ -88,6 +90,8 @@ export class AuthService {
           email,
           password,
           using2FA,
+          secret,
+          code
         },
         httpOptions
       )
@@ -102,6 +106,7 @@ export class AuthService {
   public logout() {
     this.tokenStorage.signOut();
     this.router.navigate(['login']);
+    this.tokenSubscription.unsubscribe();
   }
 
   public verify(credentials: any): Observable<JwtResponse> {
